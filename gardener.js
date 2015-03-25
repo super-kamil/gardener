@@ -1,6 +1,7 @@
 module.exports = (function() {
 
   var Q = require('q')
+    , colors = require('colors')
     , exec = require('child_process').exec
     , testHashes = [];
 
@@ -9,23 +10,26 @@ module.exports = (function() {
       , readline = require('readline')
       , tickets = [];
 
+    _drawCherry();
+
     var _read = function() {
       var rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
       });
 
-      rl.question("Ticket number pls or 'done': ", function(ticketString) {
+      rl.question(colors.yellow("Ticket number pls or 'done': "), function(ticketString) {
         rl.close();
 
         if (ticketString === "done") {
+          _drawCherry();
           deferred.resolve(tickets);
         } else {
           if (ticketString.length) {
             tickets.push(ticketString);
           }
 
-          console.log("your tickets so far: ", tickets);
+          console.log("\n", "your tickets so far: ", tickets, "\n");
           _read();
         }
       });
@@ -57,7 +61,11 @@ module.exports = (function() {
         deferred.reject(error, stderr);
       } else {
         deferred.resolve(stdout);
-        testHashes.push(stdout.replace("git cherry-pick", "").replace("\n", ""));
+        stdout.split("\n").forEach(function(hash) {
+          if (hash.length) {
+            testHashes.push(hash.replace("git cherry-pick", "").replace("\n", ""));
+          }
+        });
       }
     });
 
@@ -65,19 +73,22 @@ module.exports = (function() {
   }
 
   function _printHashes(logs) {
-    console.log("\n###############");
-    console.log("your commands\n");
+    console.log(colors.green("\n###############"));
+    console.log(colors.green("###############"));
+    console.log(colors.green("your commands"), "\n");
 
     logs.forEach(function(log) {
-      console.log(log.replace("\n", ""));
+      console.log(colors.cyan(log));
     });
+
+    console.log(colors.green("end of your commands"));
+    console.log(colors.green("###############"));
+    console.log(colors.green("###############"));
   }
 
   function _testHashes() {
     var promises = [];
-
-    console.log("\n###############");
-    console.log("please compare the commits\n");
+    console.log(colors.cyan("\nplease compare the commits"), "\n");
 
     testHashes.forEach(function(hash) {
       var deferred = Q.defer();
@@ -100,6 +111,7 @@ module.exports = (function() {
       }
     });
 
+
     return deferred.promise;
   }
 
@@ -107,6 +119,19 @@ module.exports = (function() {
     hashes.forEach(function(hash) {
       console.log(hash);
     });
+  }
+
+  function _drawCherry() {
+    console.log("\n");
+    console.log(colors.green("   __.--~~.,-.__"));
+    console.log(colors.green("   `~-._.-(`-.__`-."));
+    console.log(colors.green("           \\    `~~`"));
+    console.log(colors.red("      .--./ \\"));
+    console.log(colors.red("     /#   \\  \\.--."));
+    console.log(colors.red("     \\    /  /#   \\"));
+    console.log(colors.red("      '--'   \\    /"));
+    console.log(colors.red("              '--'"));
+    console.log("\n");
   }
 
   function run() {

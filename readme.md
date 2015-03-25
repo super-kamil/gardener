@@ -1,6 +1,6 @@
 # installation 
 `npm install`
 
-`node bin/cp.js`
+`node bin/pick.js`
 
 `follow the hints`
