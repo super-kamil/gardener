@@ -1,4 +1,9 @@
+# wat?
+the gardener is helping you picking cherries in git 
+
 # installation 
+clone or download this repo
+
 `npm install`
 
 go to your project
