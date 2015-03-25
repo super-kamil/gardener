@@ -1,0 +1,18 @@
+{
+  "name": "cherry-picker",
+  "version": "0.0.1",
+  "description": "git cherry-pick helper",
+  "main": "cherry-picker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "git",
+    "cherry-pick"
+  ],
+  "author": "Kamil Kubica <info@kamilkubica.com>",
+  "license": "ISC",
+  "dependencies": {
+    "q": "^1.2.0"
+  }
+}
