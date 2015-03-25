@@ -134,7 +134,7 @@ module.exports = (function() {
     console.log("\n");
   }
 
-  function run() {
+  function pick() {
     _getTickets()
       .then(_getHashes)
       .then(_printHashes)
@@ -144,6 +144,6 @@ module.exports = (function() {
   }
 
   return {
-    run: run
+    pick: pick
   };
 })();

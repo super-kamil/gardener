@@ -10,6 +10,10 @@
     "git",
     "cherry-pick"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/super-kamil/gardener.git"
+  },
   "author": "Kamil Kubica <info@kamilkubica.com>",
   "license": "MIT",
   "dependencies": {
