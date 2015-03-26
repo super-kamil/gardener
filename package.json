@@ -17,7 +17,6 @@
   "author": "Kamil Kubica <info@kamilkubica.com>",
   "license": "MIT",
   "dependencies": {
-    "colors": "^1.0.3",
-    "q": "^1.2.0"
+    "colors": "^1.0.3"
   }
 }

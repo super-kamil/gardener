@@ -1,75 +1,73 @@
 module.exports = (function() {
 
-  var Q = require('q')
-    , colors = require('colors')
+  var colors = require('colors')
     , exec = require('child_process').exec
     , testHashes = [];
 
   function _getTickets() {
-    var deferred = Q.defer()
-      , readline = require('readline')
-      , tickets = [];
+    return new Promise(function(resolve) {
+      var readline = require('readline')
+        , tickets = [];
 
-    _drawCherry();
+      _drawCherry();
 
-    var _read = function() {
-      var rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-      });
+      var _read = function() {
+        var rl = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout
+        });
 
-      rl.question(colors.yellow("Ticket number pls or 'done': "), function(ticketString) {
-        rl.close();
+        rl.question(colors.yellow("Ticket number pls or 'done': "), function(ticketString) {
+          rl.close();
 
-        if (ticketString === "done") {
-          _drawCherry();
-          deferred.resolve(tickets);
-        } else {
-          if (ticketString.length) {
-            tickets.push(ticketString);
+          if (ticketString === "done") {
+            _drawCherry();
+            resolve(tickets);
+          } else {
+            if (ticketString.length) {
+              tickets.push(ticketString);
+            }
+
+            console.log("\n", "your tickets so far: ", tickets, "\n");
+            _read();
           }
+        });
+      };
 
-          console.log("\n", "your tickets so far: ", tickets, "\n");
-          _read();
-        }
-      });
-    };
-
-    _read();
-
-    return deferred.promise;
+      _read();
+    });
   }
 
   function _getHashes(tickets) {
     var promises = [];
 
     tickets.forEach(function(ticket) {
-      var deferred = Q.defer();
-      _getLog(ticket).then(deferred.resolve);
-      promises.push(deferred.promise);
+      var prom = new Promise(function(resolve) {
+        _getLog(ticket).then(resolve);
+      });
+      promises.push(prom);
     });
 
-    return Q.all(promises);
+    return Promise.all(promises);
   }
 
   function _getLog(ticket) {
-    var deferred = Q.defer()
-      , cmd = "git log --reverse --grep=\"" + ticket + "\" | grep \"^commit\" | sed \"s/commit/git cherry-pick/g\"";
+    return new Promise(function(resolve, reject) {
+      var cmd = "git log --reverse --grep=\"" + ticket + "\" | grep \"^commit\" | sed \"s/commit/git cherry-pick/g\"";
 
-    exec(cmd, function(error, stdout, stderr) {
-      if (error) {
-        deferred.reject(error, stderr);
-      } else {
-        deferred.resolve(stdout);
-        stdout.split("\n").forEach(function(hash) {
-          if (hash.length) {
-            testHashes.push(hash.replace("git cherry-pick", "").replace("\n", ""));
-          }
-        });
-      }
+      exec(cmd, function(error, stdout, stderr) {
+        if (error) {
+          reject(error, stderr);
+        } else {
+          resolve(stdout);
+          stdout.split("\n").forEach(function(hash) {
+            if (hash.length) {
+              testHashes.push(hash.replace("git cherry-pick", "").replace("\n", ""));
+            }
+          });
+        }
+      });
     });
-
-    return deferred.promise;
   }
 
   function _printHashes(logs) {
@@ -91,28 +89,28 @@ module.exports = (function() {
     console.log(colors.cyan("\nplease compare the commits"), "\n");
 
     testHashes.forEach(function(hash) {
-      var deferred = Q.defer();
-      _testHash(hash).then(deferred.resolve);
-      promises.push(deferred.promise);
+      var prom = new Promise(function(resolve) {
+        _testHash(hash).then(resolve);
+      });
+      promises.push(prom);
     });
 
-    return Q.all(promises);
+    return Promise.all(promises);
   }
 
   function _testHash(hash) {
-    var deferred = Q.defer()
-      , cmd = "git log " + hash + " -n 1";
+    return new Promise(function(resolve, reject) {
+      var cmd = "git log " + hash + " -n 1";
 
-    exec(cmd, function(error, stdout, stderr) {
-      if (error) {
-        deferred.reject(error, stderr);
-      } else {
-        deferred.resolve(stdout);
-      }
+      exec(cmd, function(error, stdout, stderr) {
+        if (error) {
+          reject(error, stderr);
+        } else {
+          resolve(stdout);
+        }
+      });
+
     });
-
-
-    return deferred.promise;
   }
 
   function _printTestHashes(hashes) {
