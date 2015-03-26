@@ -1,3 +1,5 @@
+![cherry](https://dl.dropboxusercontent.com/u/383246/cherry.PNG)
+
 # wat?
 the gardener is helping you picking cherries in git 
 
