@@ -1,22 +1,22 @@
 {
-  "name": "gardener",
-  "version": "0.0.1",
-  "description": "git cherry-pick helper",
-  "main": "gardener.js",
-  "scripts": {
-    "start": "node bin/pick.js"
-  },
-  "keywords": [
-    "git",
-    "cherry-pick"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/super-kamil/gardener.git"
-  },
-  "author": "Kamil Kubica <info@kamilkubica.com>",
-  "license": "MIT",
-  "dependencies": {
-    "colors": "^1.0.3"
-  }
+    "name": "gardener",
+    "version": "0.0.2",
+    "description": "git cherry-pick helper",
+    "main": "gardener.js",
+    "scripts": {
+        "start": "node bin/pick.js"
+    },
+    "keywords": [
+        "git",
+        "cherry-pick"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/super-kamil/gardener.git"
+    },
+    "author": "Kamil Kubica <info@kamilkubica.com>",
+    "license": "MIT",
+    "dependencies": {
+        "colors": "^1.0.3"
+    }
 }
