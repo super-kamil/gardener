@@ -10,7 +10,7 @@ clone or download this repo
 
 go to your project
 
-`node PATH_TO_GARDENER/bin/pick.js`
+`node PATH_TO_GARDENER/bin/pick.js` or `node PATH_TO_GARDENER/bin/pick.js LHAS-XXXX` 
 
 `follow the hints`
 
